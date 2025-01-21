@@ -45,7 +45,7 @@ export default function Images() {
                         {itemData.map((imgUrl, index) => (
                             <ImageListItem key={index}>
                                 <img
-                                    src={`http://localhost:3000/uploads/${imgUrl}`}
+                                    src={`https://emailmaker.vercel.app/uploads/${imgUrl}`}
                                     srcSet={`${imgUrl}?w=248&fit=crop&auto=format&dpr=2 2x`}
                                     alt={`Image ${index + 1}`}
                                     loading="lazy"
