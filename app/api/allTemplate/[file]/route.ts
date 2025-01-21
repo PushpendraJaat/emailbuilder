@@ -36,7 +36,8 @@ export async function GET(req: Request, { params }: { params: { file: string } }
     } catch (error) {
         console.error('Error reading file:', error);
 
-        if (error.code === 'ENOENT') {
+        // Narrow the type of error
+        if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
             return NextResponse.json(
                 { success: false, message: 'Template file not found' },
                 { status: 404 }
