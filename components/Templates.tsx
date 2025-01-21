@@ -7,7 +7,14 @@ export default function Images() {
     const [pageLoading, setPageLoading] = useState(true);
     const [layout, setLayout] = useState('');
     const [files, setFiles] = useState([]); // Store file names
-    const [templateDataList, setTemplateDataList] = useState([]); // Store templates for preview
+    interface TemplateData {
+        file: string;
+        title: string;
+        content: string;
+        imageUrl: string;
+    }
+
+    const [templateDataList, setTemplateDataList] = useState<TemplateData[]>([]); // Store templates for preview
     const [message, setMessage] = useState(''); // Store success message
 
     useEffect(() => {
@@ -43,7 +50,7 @@ export default function Images() {
         fetchData();
     }, []);
 
-    const fetchTemplate = async (file) => {
+    const fetchTemplate = async (file: string) => {
         try {
             const response = await fetch(`/api/allTemplate/${file}`);
             const data = await response.json();
