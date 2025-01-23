@@ -1,11 +1,6 @@
 ```markdown
 # 📧 EmailBuilder - Next-Gen Email Template Development Toolkit 🚀
 
-[![Next.js](https://img.shields.io/badge/Next.js-13+-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.3+-06B6D4?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-
 A modern email template builder that transforms your marketing workflow ⚡. Craft stunning, responsive email templates with real-time previews, cloud-powered asset management, and seamless HTML export.
 
 ![EmailBuilder Demo](https://via.placeholder.com/800x400.png?text=EmailBuilder+Interface+Preview)
