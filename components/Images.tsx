@@ -17,10 +17,13 @@ export default function Images() {
                 if (!response.ok) throw new Error("Failed to fetch images");
 
                 const data = await response.json(); // Parse the response as JSON
-                console.log("Fetched images:", data.files);
+                console.log(data);
+                
 
                 if (data.success && Array.isArray(data.files)) {
+                    console.log("Fetched images:", data);
                     setItemData(data.files); // Update state with image URLs
+                    console.log("Fetched images:", itemData);
                 } else {
                     throw new Error("Invalid data format");
                 }
