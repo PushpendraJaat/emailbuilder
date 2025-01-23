@@ -15,7 +15,7 @@ export default function Images() {
             try {
                 
                 const response = await fetch("/api/getImages",{
-                    cache: "no-cache
+                    cache: "no-cache"
                 }); // API endpoint
                 if (!response.ok) throw new Error("Failed to fetch images");
 
