@@ -24,7 +24,7 @@ export default function Templates() {
         const [layoutResponse, templatesResponse] = await Promise.all([
           fetch("/api/getEmailLayout"),
           fetch("/api/getTemplates",{
-            cache: "reload"
+            cache: "no-cache"
           }),
         ]);
 
