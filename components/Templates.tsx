@@ -20,9 +20,10 @@ export default function Templates() {
     const fetchTemplates = async () => {
       try {
         // Fetch layout and templates in parallel
+        const timestamp = Date.now();
         const [layoutResponse, templatesResponse] = await Promise.all([
           fetch("/api/getEmailLayout"),
-          fetch("/api/getTemplates"),
+          fetch(`/api/getTemplates?_=${timestamp}`),
         ]);
 
         // Handle layout response
