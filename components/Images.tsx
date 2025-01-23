@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import Image from "next/image";
 
 export default function Images() {
     const [pageLoading, setPageLoading] = useState(true);
-    const [itemData, setItemData] = useState([]); // Initialize as an empty array
+    const [itemData, setItemData] = useState<{ url: string }[]>([]); // Initialize as an empty array with type
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -45,11 +46,12 @@ export default function Images() {
                         <ImageList variant="masonry" cols={3} gap={8}>
                             {itemData.map((img, index) => (
                                 <ImageListItem key={index}>
-                                    <img
+                                    <Image
                                         src={img.url} // Use the image URL directly
-                                        srcSet={`${img.url}?w=248&fit=crop&auto=format&dpr=2 2x`}
                                         alt={`Image ${index + 1}`}
-                                        loading="lazy"
+                                        width={248}
+                                        height={248}
+                                        layout="responsive"
                                     />
                                 </ImageListItem>
                             ))}
