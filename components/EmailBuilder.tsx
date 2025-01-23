@@ -16,6 +16,7 @@ export default function EmailBuilder() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
+  const [templateSaved, setTemplateSaved] = useState(true);
 
   useEffect(() => {
     const fetchEmailLayout = async () => {
@@ -46,16 +47,11 @@ export default function EmailBuilder() {
 
   const handleSubmit = async () => {
     if (!imageFile) return alert("Please upload an image");
-    console.log(imageFile
-    );
-    
     try {
       setLoading(true);
 
       const formData = new FormData();
       formData.append("file", imageFile);
-      console.log(formData);
-      
 
       const uploadResponse = await fetch("/api/uploadImage", {
         method: "POST",
@@ -81,7 +77,7 @@ export default function EmailBuilder() {
         const errorText = await saveResponse.text();
         throw new Error(`Template save failed: ${errorText}`);
       }
-
+      setTemplateSaved(false)
       alert("Email template saved successfully!");
     } catch (error) {
       console.error("Error saving email template:", error);
@@ -168,7 +164,7 @@ export default function EmailBuilder() {
                     <Button onClick={handleSubmit} disabled={loading}>
                       {loading ? "Saving..." : "Save Template"}
                     </Button>
-                    <Button onClick={handleDownload} variant="outline" disabled={loading}>
+                    <Button onClick={handleDownload} variant="outline" disabled={templateSaved}>
                       {loading ? "Downloading..." : "Download HTML"}
                     </Button>
                     <Button>
