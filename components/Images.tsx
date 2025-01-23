@@ -13,8 +13,10 @@ export default function Images() {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const timestamp = Date.now();
-                const response = await fetch(`/api/getImages?_=${timestamp}`); // API endpoint
+                
+                const response = await fetch("/api/getImages"{
+                    cache: "no-cache
+                }); // API endpoint
                 if (!response.ok) throw new Error("Failed to fetch images");
 
                 const data = await response.json(); // Parse the response as JSON
