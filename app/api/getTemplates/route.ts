@@ -1,22 +1,33 @@
 import { NextResponse } from 'next/server';
-import { readdir } from 'fs/promises';
-import path from 'path';
+import dbConnect from '@/lib/dbConnect'; // Ensure this path matches your dbConnect file
+import EmailConfig from '@/models/EmailConfig'; // Ensure this path matches your EmailConfig model
 
 export async function GET() {
-    try {
-        const templateDirectory = path.join(process.cwd(), 'public/data');
-        const files = await readdir(templateDirectory);
-        // console.log(files);
-        return NextResponse.json({ files, success: true, message: "Template fetched successfully" });
+  try {
+    // Connect to the database
+    await dbConnect();
 
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json(
-            {
-                success: false,
-                message: "Error while fetching template"
-            },
-            { status: 500 }
-        );
-    }
+    // Fetch all email configurations from the collection
+    const emailConfigs = await EmailConfig.find().lean();
+    console.log(emailConfigs);
+    
+
+    // Return the fetched email configurations as a response
+    return NextResponse.json({
+      success: true,
+      message: "Email configurations fetched successfully",
+      data: emailConfigs,
+    });
+  } catch (error) {
+    console.error('Error fetching email configurations:', error);
+
+    // Return a detailed error response
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Error while fetching email configurations",
+      },
+      { status: 500 }
+    );
+  }
 }

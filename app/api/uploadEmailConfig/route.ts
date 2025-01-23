@@ -1,41 +1,70 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+// app/api/uploadEmailConfig/route.ts
+import EmailConfig from '@/models/EmailConfig';
+import dbConnect from '@/lib/dbConnect';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+interface EmailConfigBody {
+  title: string;
+  content: string;
+  image: string;
+}
+
+export async function POST(request: Request) {
+  await dbConnect();
+
   try {
-    // Parse the incoming JSON data
-    const data = await request.json();
+    const body: EmailConfigBody = await request.json();
 
-    // Check if data exists and is valid
-    if (!data || Object.keys(data).length === 0) {
+    if (!body.title || !body.content || !body.image) {
       return NextResponse.json(
-        { success: false, message: 'No valid data received' },
+        { success: false, message: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // Define the file name and path where the file will be saved
-    const filename = `email-config-${Date.now()}.json`;
-    const dataDir = path.join(process.cwd(), 'public', 'data');
-    const filepath = path.join(dataDir, filename);
+    const emailConfig = new EmailConfig({
+      title: body.title,
+      content: body.content,
+      imageUrl: body.image,
+    });
 
-    // Ensure the 'data' directory exists
-    await mkdir(dataDir, { recursive: true });
+    await emailConfig.save();
 
-    // Write the JSON data to the file
-    await writeFile(filepath, JSON.stringify(data, null, 2));
-
-    // Return a successful response
-    return NextResponse.json({ success: true, message: 'Email config saved successfully' });
-
-  } catch (error) {
-    console.error('Error saving email config:', error);
-
-    // Return a detailed error response with status 500
     return NextResponse.json(
-      { success: false, message: 'Failed to save email config' },
+      { success: true, data: emailConfig },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: 'Internal server error',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
+}
+
+// Optional: Explicitly handle unsupported methods
+export function GET() {
+  return NextResponse.json(
+    { success: false, message: 'Method not allowed' },
+    { status: 405 }
+  );
+}
+
+export function PUT() {
+  return NextResponse.json(
+    { success: false, message: 'Method not allowed' },
+    { status: 405 }
+  );
+}
+
+export function DELETE() {
+  return NextResponse.json(
+    { success: false, message: 'Method not allowed' },
+    { status: 405 }
+  );
 }
