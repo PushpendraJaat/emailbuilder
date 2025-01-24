@@ -3,18 +3,18 @@
 
 A modern email template builder that transforms your marketing workflow ⚡. Craft stunning, responsive email templates with real-time previews, cloud-powered asset management, and seamless HTML export.
 
-![EmailBuilder Demo](https://via.placeholder.com/800x400.png?text=EmailBuilder+Interface+Preview)
+![EmailBuilder Demo](https://emailmaker.vercel.app/)
 
 ## 🎯 Features
 
 - **🖥️ Visual Template Studio**  
-  Drag-and-drop interface with live HTML/CSS preview
+  Simple interface with preview
 
 - **🌩️ Cloud-Powered Workflow**  
   Integrated with Cloudinary for instant image uploads & CDN distribution
 
 - **📦 Template Versioning**  
-  Auto-save templates with version history (MongoDB backend)
+  Save templates with MongoDB backend
 
 - **⚡ One-Click Export**  
   Generate production-ready HTML/CSS with semantic markup
@@ -29,10 +29,10 @@ A modern email template builder that transforms your marketing workflow ⚡. Cra
 
 | Layer                | Technology                          |
 |----------------------|-------------------------------------|
-| **Frontend**         | ![Next.js](https://img.shields.io/badge/-Next.js-000?logo=next.js) ![React](https://img.shields.io/badge/-React-61DAFB?logo=react) ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript) |
-| **Styling**          | ![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-06B6D4?logo=tailwind-css) ![Shadcn UI](https://img.shields.io/badge/-Shadcn_UI-111827) |
-| **Cloud Services**   | ![Cloudinary](https://img.shields.io/badge/-Cloudinary-3448C5?logo=cloudinary) |
-| **Database**         | ![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?logo=mongodb) |
+| **Frontend**         | Next.js, React and TypeScript
+| **Styling**          | Tailwind CSS
+| **Cloud Services**   | Cloudinary
+| **Database**         | MongoDB
 
 ## 🚀 Quick Start
 
