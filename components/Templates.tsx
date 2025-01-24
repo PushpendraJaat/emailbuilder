@@ -10,7 +10,7 @@ interface Template {
   imageUrl: string;
 }
 
-const fetcher = (url: string) => fetch(url, { cache: "no-cache" }).then(res => res.json());
+const fetcher = (url: string) => fetch(url, { cache: "no-store" }).then(res => res.json());
 const textFetcher = (url: string) => fetch(url).then(res => res.text());
 
 export default function Templates() {

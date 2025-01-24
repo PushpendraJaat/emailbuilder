@@ -6,7 +6,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Image from "next/image";
 
-const fetcher = (url: string) => fetch(url, { cache: "no-cache" }).then(res => res.json());
+const fetcher = (url: string) => fetch(url, { cache: "no-store" }).then(res => res.json());
 
 export default function Images() {
     const { data, error, isLoading } = useSWR<{ 
