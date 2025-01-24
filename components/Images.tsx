@@ -9,10 +9,11 @@ import Image from "next/image";
 const fetcher = (url: string) => fetch(url, { cache: "no-store" }).then(res => res.json());
 
 export default function Images() {
-    const { data, error, isLoading } = useSWR('/api/getImages', fetcher, {
+    const { data: imgData, error, isLoading } = useSWR('/api/getImages', fetcher, {
         refreshInterval: 10000, // 10s polling
         revalidateOnFocus: true
       });
+      
 
     return (
         <>
@@ -25,10 +26,10 @@ export default function Images() {
                     Failed to load images: {error.message}
                 </div>
             ) : (
-                <Box sx={{ width: "100%", height: "auto", overflowY: "scroll", padding: 2 }}>
-                    {data?.files?.length ? (
+                <Box sx={{ width: "80%", height: "auto", overflowY: "scroll", padding: 2 }}>
+                    {imgData.data?.files?.length ? (
                         <ImageList variant="masonry" cols={3} gap={8}>
-                            {data.files.map((img: { url: string }, index: number) => (
+                            {imgData.data.files.map((img: { url: string }, index: number) => (
                                 <ImageListItem key={index}>
                                     <Image
                                         src={img.url}
