@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { mutate } from "swr";
 
 export default function EmailBuilder() {
   const [layout, setLayout] = useState("");
@@ -77,6 +78,17 @@ export default function EmailBuilder() {
         const errorText = await saveResponse.text();
         throw new Error(`Template save failed: ${errorText}`);
       }
+    
+        // Optimistically update the cache
+        const newTemplate = await saveResponse.json();
+        mutate((prevData: { data: { title: string; content: string; image: string }[] }) => ({
+          ...prevData,
+          data: [...prevData.data, newTemplate]
+        }), false); // false = don't revalidate immediately
+  
+        // Trigger background revalidation
+        mutate("/api/uploadEmailConfig");
+   
       setTemplateSaved(false)
       alert("Email template saved successfully!");
     } catch (error) {
