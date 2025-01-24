@@ -1,32 +1,71 @@
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 
-// Configure Cloudinary
+// Disable static caching and force dynamic behavior
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+// Validate environment variables
+if (!process.env.CLOUDINARY_CLOUD_NAME || 
+    !process.env.CLOUDINARY_API_KEY || 
+    !process.env.CLOUDINARY_API_SECRET) {
+  throw new Error('Cloudinary environment variables not configured');
+}
+
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, // Your Cloudinary cloud name
-  api_key: process.env.CLOUDINARY_API_KEY,       // Your Cloudinary API key
-  api_secret: process.env.CLOUDINARY_API_SECRET, // Your Cloudinary API secret
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+interface CloudinaryFile {
+  secure_url: string;
+  public_id: string;
+  created_at: string;
+}
 
 export async function GET() {
   try {
-    // Fetch resources from the `uploads` folder in your Cloudinary account
+    // Fetch resources with cache-busting parameters
     const response = await cloudinary.api.resources({
       type: 'upload',
-      prefix: 'uploads/', // Folder name in Cloudinary
-      max_results: 100,   // Adjust this as needed
+      prefix: 'uploads/',
+      max_results: 100,
+      tags: true,
+      context: true,
+      timestamp: Date.now() // Cache busting
     });
 
-    const files = response.resources.map((file: { secure_url: string; public_id: string }) => ({
-      url: file.secure_url,
-      filename: file.public_id,
-    }));
+    // Add cache control headers to response
+    const responseObj = NextResponse.json({
+      success: true,
+      message: 'Images fetched successfully',
+      data: {
+        files: response.resources.map((file: CloudinaryFile) => ({
+          url: file.secure_url,
+          filename: file.public_id,
+          uploadedAt: file.created_at
+        })),
+        timestamp: Date.now()
+      }
+    });
 
-    return NextResponse.json({ success: true, files, message: 'Images fetched successfully' });
+    // Prevent all caching layers from storing this response
+    responseObj.headers.set('Cache-Control', 'no-store, max-age=0');
+    responseObj.headers.set('Vercel-CDN-Cache-Control', 'no-cache');
+    responseObj.headers.set('CDN-Cache-Control', 'no-cache');
+
+    return responseObj;
+
   } catch (error) {
-    console.error('Error fetching images from Cloudinary:', error);
+    console.error('[CLOUDINARY_GET_ERROR]', error);
+    
     return NextResponse.json(
-      { success: false, message: 'Error while fetching images' },
+      {
+        success: false,
+        message: 'Error while fetching images',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
