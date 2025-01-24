@@ -41,6 +41,9 @@ const EmailConfigSchema: Schema = new Schema<IEmailConfig>(
 );
 
 // Create or retrieve the EmailConfig model
+
+EmailConfigSchema.index({ createdAt: -1 });
+
 const EmailConfig =
   mongoose.models.EmailConfig ||
   mongoose.model<IEmailConfig>('EmailConfig', EmailConfigSchema);
