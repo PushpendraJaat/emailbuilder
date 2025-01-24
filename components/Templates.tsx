@@ -16,13 +16,18 @@ const textFetcher = (url: string) => fetch(url).then(res => res.text());
 export default function Templates() {
   // Fetch email layout
   const { data: layoutData } = useSWR<string>('/api/getEmailLayout', textFetcher);
-  
+
   // Fetch templates with TypeScript type
+  // In your component where you fetch templates
   const { data: templatesData, error, isLoading } = useSWR<{
     success: boolean;
     data: Template[];
     message: string;
-  }>('/api/getTemplates', fetcher);
+  }>('/api/getTemplates', fetcher, {
+    refreshInterval: 3000, // Revalidate every 3 seconds
+    revalidateOnFocus: true, // Refresh when window gains focus
+    revalidateOnReconnect: true // Refresh when network reconnects
+  });
 
   return (
     <>
