@@ -3,7 +3,7 @@
 
 A modern email template builder that transforms your marketing workflow ⚡. Craft stunning, responsive email templates with real-time previews, cloud-powered asset management, and seamless HTML export.
 
-[EmailBuilder Demo](https://emailmaker.vercel.app/)
+[EmailBuilder-Demo](https://emailmaker.vercel.app/)
 
 ## 🎯 Features
 
